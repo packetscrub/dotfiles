@@ -41,11 +41,11 @@ fi
 if [ "$(prompt 'setup bash symlinks')" = "y" ]; then
     echo "--> Setting up symlinks..."
 
-    if [ test -f "$HOME/.bashrc" ]; then
+    if [ -f "$HOME/.bashrc" ]; then
 	echo "backing up existing .bashrc to .bashrc.bak"
 	mv $HOME/.bashrc $HOME/.bashrc.bak
     fi
-    if [ test -f "$HOME/.bash_aliases" ]; then
+    if [ -f "$HOME/.bash_aliases" ]; then
 	echo "backing up existing .bash_aliases to .bash_aliases.bak"
 	mv $HOME/.bash_aliases $HOME/.bash_aliases.bak
     fi
