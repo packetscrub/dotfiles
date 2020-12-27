@@ -120,9 +120,11 @@ export XAUTHORITY=$HOME/.Xauthority
 
 # re-lxc/ubuntu
 lxcsh() {
-    echo "starting lxc container "$1" as user "$2"";
+    echo "starting lxc container '$1' as user '$2'";
     lxc exec "$1" -- sudo --login --user "$2";
 }
 
-export PATH=$HOME/software/jdk-11/bin:$PATH
+# for when virtualenvwrapper isn't found
+# source '/usr/share/virtualenvwrapper/virtualenvwrapper.sh'
 
+export PATH=$HOME/software/jdk-11/bin:$PATH
