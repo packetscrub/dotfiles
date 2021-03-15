@@ -33,7 +33,7 @@ fi
 # install the basics
 if [ "$(prompt 'install basics')" = "y" ]; then
     basics=("git" "vim" "ssh" "shellcheck"
-            "htop" "tree" "virtualbox")
+            "htop" "tree" "xtermcontrol")
     apt-install "${basics[@]}"
 fi
  
@@ -119,7 +119,7 @@ if [ "$(prompt 'build ghidra in docker')" = "y" ]; then
         sudo usermod -aG docker $USER
     fi
 
-    if [ ! -d "ghidra" ]; then
+    if [ ! -d "ghidra-builder" ]; then
     	echo "--> Getting ghidra docker repo"
     	git clone https://github.com/dukebarman/ghidra-builder.git
     fi
