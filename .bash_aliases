@@ -3,7 +3,7 @@ function ssh_alias() {
     FG=$(xtermcontrol --get-fg)
     BG=$(xtermcontrol --get-bg)
     $(which ssh) "$@"
-    xtermcontrol --fg = "$FG"
+    xtermcontrol --fg="$FG"
     xtermcontrol --bg="$BG"
 }
 alias ssh=ssh_alias

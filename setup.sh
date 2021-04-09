@@ -45,13 +45,21 @@ if [ "$(prompt 'setup bash symlinks')" = "y" ]; then
 	echo "backing up existing .bashrc to .bashrc.bak"
 	mv $HOME/.bashrc $HOME/.bashrc.bak
     fi
+
     if [ -f "$HOME/.bash_aliases" ]; then
 	echo "backing up existing .bash_aliases to .bash_aliases.bak"
 	mv $HOME/.bash_aliases $HOME/.bash_aliases.bak
     fi
 
+    if [ -f "$HOME/.tmux.conf" ]; then
+	echo "backing up existing .tmux.conf to .tmux.conf.bak"
+	mv $HOME/.tmux.conf $HOME/.tmux.bak
+    fi
+
+
     ln -sv $DOTFILE_PATH/.bashrc $HOME
     ln -sv $DOTFILE_PATH/.bash_aliases $HOME
+    ln -sv $DOTFILE_PATH/.tmux.conf $HOME
     source "$HOME/.bashrc"
     source "$HOME/.bash_aliases"
 fi
