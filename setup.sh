@@ -56,7 +56,6 @@ if [ "$(prompt 'setup bash symlinks')" = "y" ]; then
 	mv $HOME/.tmux.conf $HOME/.tmux.bak
     fi
 
-
     ln -sv $DOTFILE_PATH/.bashrc $HOME
     ln -sv $DOTFILE_PATH/.bash_aliases $HOME
     ln -sv $DOTFILE_PATH/.tmux.conf $HOME
@@ -98,51 +97,31 @@ if [ "$(prompt "install wine")" = "y" ]; then
 fi
 
 # install reversing tools
+# uhhh..need to add more....
 if [ "$(prompt 'install reversing tools')" = "y" ]; then
     echo "--> Installing reversing tools"
-    reverse_tools=("binwalk" "unrar")
-    apt-install "${reverse_tools[@]}" 
+    reverse_tools=("binwalk" "unrar" "nmap" "aircrack-ng")
+    apt-install "${reverse_tools[@]}"
+fi
+
+# build jadx
+if [ "$(prompt 'build jadx')" = "y" ]; then
+    echo "--> Building jadx"
+    git clone https://github.com/skylot/jadx
+    ./jadx/gradlew dist
 fi
 
 # build ghidra with docker-builder
+# FIXME
 if [ "$(prompt 'build ghidra in docker')" = "y" ]; then
-    echo "--> Getting docker"
-    sudo apt-get remove docker docker-engine docker.io
-    sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo apt-key fingerprint 0EBFCD88
-    sudo add-apt-repository \
-    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-    $(lsb_release -cs) \
-    stable"
-    
-    echo "--> Checking for docker group"
-    if [ ! "$(getent group docker)" ]; then
-        echo "--> Creating docker group"
-        sudo groupadd docker
-        sudo usermod -aG docker $USER
-    fi
-
-    if [ ! -d "ghidra-builder" ]; then
-    	echo "--> Getting ghidra docker repo"
-    	git clone https://github.com/dukebarman/ghidra-builder.git
-    fi
-
-    echo "--> Building Ghidra (can take a while)"
-    # building ghidra with docker according to github instructions
-    sg docker -c "./ghidra-builder/docker-tpl/run ./ghidra-builder/workdir/build_ghidra.sh"
-
+    ./ghidra.sh
 fi
 
 # install network tools
 if [ "$(prompt 'install network tools')" = "y" ]; then
     echo "--> Installing network tools"
-    network_tools=("wireshark" "tshark" "arp-scan" "traceroute" "nmap" "aircrack-ng" "curl")
+    network_tools=("wireshark" "tshark" "arp-scan" "traceroute" "curl")
     apt-install "${network_tools[@]}"
 fi
 
-echo "Done"
+echo "Done!"
