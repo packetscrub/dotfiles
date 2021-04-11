@@ -32,7 +32,7 @@ fi
 
 # install the basics
 if [ "$(prompt 'install basics')" = "y" ]; then
-    basics=("git" "vim" "ssh" "shellcheck"
+    basics=("git" "vim" "tmux" "ssh" "shellcheck"
             "htop" "tree" "xtermcontrol")
     apt-install "${basics[@]}"
 fi
