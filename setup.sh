@@ -106,6 +106,10 @@ fi
 
 # build jadx
 if [ "$(prompt 'build jadx')" = "y" ]; then
+    if [[ -z "${JAVA_HOME}" ]]; then
+        echo "--> Need to install Java, installing JDK"
+        sudo apt install default-jdk
+    fi
     echo "--> Building jadx"
     git clone https://github.com/skylot/jadx
     ./jadx/gradlew dist
