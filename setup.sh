@@ -1,6 +1,6 @@
 #!/bin/bash
 
-DOTFILE_PATH="$(pwd)"
+DIR="$(pwd)"
 
 function update-grade {
     echo "--> Updating and upgrading packages..."
@@ -17,7 +17,7 @@ function prompt {
     fi
 }
 
-function apt-install {
+function install {
     arr=("$@")
     for i in "${arr[@]}"; do
         echo "--> Installing $i"
@@ -33,8 +33,8 @@ fi
 # install the basics
 if [ "$(prompt 'install basics')" = "y" ]; then
     basics=("git" "vim" "tmux" "ssh" "shellcheck"
-            "htop" "tree" "xtermcontrol")
-    apt-install "${basics[@]}"
+            "htop" "tree" "xtermcontrol" "p7zip-full" "p7zip-rar")
+    install "${basics[@]}"
 fi
  
 # symlink stuff
@@ -56,9 +56,9 @@ if [ "$(prompt 'setup bash symlinks')" = "y" ]; then
 	mv $HOME/.tmux.conf $HOME/.tmux.bak
     fi
 
-    ln -sv $DOTFILE_PATH/.bashrc $HOME
-    ln -sv $DOTFILE_PATH/.bash_aliases $HOME
-    ln -sv $DOTFILE_PATH/.tmux.conf $HOME
+    ln -sv $DIR/.bashrc $HOME
+    ln -sv $DIR/.bash_aliases $HOME
+    ln -sv $DIR/.tmux.conf $HOME
     source "$HOME/.bashrc"
     source "$HOME/.bash_aliases"
 fi
@@ -67,8 +67,8 @@ fi
 if [ "$(prompt 'setup vim')" = "y" ]; then
     echo "--> Setting up vim configuration..." 
     git clone https://github.com/VundleVim/Vundle.vim.git vim/.vim/bundle/Vundle.vim
-    ln -sv $DOTFILE_PATH/vim/.vim $HOME
-    ln -sv $DOTFILE_PATH/vim/.vimrc $HOME
+    ln -sv $DIR/vim/.vim $HOME
+    ln -sv $DIR/vim/.vimrc $HOME
     vim +PluginInstall +qall
 fi
 
@@ -77,12 +77,14 @@ if [ "$(prompt 'install python dependencies')" = "y" ]; then
     echo "--> Installing python dependencies and virtualenvs..."
     python_deps=("python" "python-pip" "python3" "python3-pip" "virtualenv"
                  "virtualenvwrapper" "libssl-dev" "libffi-dev" "build-essential")
-    apt-install "${python_deps[@]}"
-    echo "--> Setting up virtualenv cpy2..."
-    mkvirtualenv -p "/usr/bin/python2.7" cpy2
-    deactivate
-    mkvirtualenv -p "/usr/bin/python3" cpy3
-    deactivate
+    install "${python_deps[@]}"
+
+    # XXX FIXME
+    # echo "--> Setting up virtualenv cpy2..."
+    # mkvirtualenv -p "/usr/bin/python2.7" cpy2
+    # deactivate
+    # mkvirtualenv -p "/usr/bin/python3" cpy3
+    # deactivate
 fi
 
 # install wine
@@ -92,7 +94,7 @@ if [ "$(prompt "install wine")" = "y" ]; then
     sudo apt-key add winehq.key
     sudo apt-add-repository 'deb https://dl.winehq.org/wine-builds/ubuntu/ bionic main'
     sudo apt update
-    sudo apt install --install-recommends winehq-stable
+    install --install-recommends winehq-stable
     rm winehq.key
 fi
 
@@ -101,14 +103,14 @@ fi
 if [ "$(prompt 'install reversing tools')" = "y" ]; then
     echo "--> Installing reversing tools"
     reverse_tools=("binwalk" "unrar" "nmap" "aircrack-ng")
-    apt-install "${reverse_tools[@]}"
+    install "${reverse_tools[@]}"
 fi
 
 # build jadx
 if [ "$(prompt 'build jadx')" = "y" ]; then
     if [[ -z "${JAVA_HOME}" ]]; then
         echo "--> Need to install Java, installing JDK"
-        sudo apt install default-jdk
+        install default-jdk
     fi
     echo "--> Building jadx"
     git clone https://github.com/skylot/jadx
@@ -125,7 +127,7 @@ fi
 if [ "$(prompt 'install network tools')" = "y" ]; then
     echo "--> Installing network tools"
     network_tools=("wireshark" "tshark" "arp-scan" "traceroute" "curl")
-    apt-install "${network_tools[@]}"
+    install "${network_tools[@]}"
 fi
 
 echo "Done!"

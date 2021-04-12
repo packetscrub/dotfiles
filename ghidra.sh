@@ -1,8 +1,8 @@
 #!/bin/bash
 
 echo "--> Starting Ghidra Build..."
-echo "--> Getting docker"
 
+echo "--> Getting docker"
 sudo apt-get remove docker docker-engine docker.io
 sudo apt-get install \
 apt-transport-https \
